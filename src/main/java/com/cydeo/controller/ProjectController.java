@@ -1,13 +1,11 @@
 package com.cydeo.controller;
 
+import com.cydeo.dto.ProjectDTO;
 import com.cydeo.dto.ResponseWrapper;
 import com.cydeo.service.ProjectService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/v2/project")
@@ -35,6 +33,24 @@ public class ProjectController {
                 .code(HttpStatus.OK.value())
                 .message("Project " + code + " is successfully retrieved.")
                 .data(projectService.getByProjectCode(code)).build());
+    }
+
+    @PostMapping
+    public ResponseEntity<ResponseWrapper> createProject(@RequestBody ProjectDTO projectDTO){
+        projectService.save(projectDTO);
+        return ResponseEntity.status(HttpStatus.CREATED).body(ResponseWrapper.builder()
+                .success(true)
+                .code(HttpStatus.CREATED.value())
+                .message("Project is successfully created").build());
+    }
+
+    @PutMapping
+    public ResponseEntity<ResponseWrapper> updateProject(@RequestBody ProjectDTO projectDTO){
+        projectService.update(projectDTO);
+        return ResponseEntity.ok(ResponseWrapper.builder()
+                .success(true)
+                .code(HttpStatus.OK.value())
+                .message("Project is successfully updated").build());
     }
 
 }
