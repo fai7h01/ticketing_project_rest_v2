@@ -18,7 +18,7 @@ public class ProjectController {
     }
 
     @GetMapping
-    public ResponseEntity<ResponseWrapper> findAllProjects(){
+    public ResponseEntity<ResponseWrapper> findAllProjects() {
         return ResponseEntity.ok(ResponseWrapper.builder()
                 .success(true)
                 .code(HttpStatus.OK.value())
@@ -27,7 +27,7 @@ public class ProjectController {
     }
 
     @GetMapping("/{projectCode}")
-    public ResponseEntity<ResponseWrapper> findByProjectCode(@PathVariable("projectCode") String code){
+    public ResponseEntity<ResponseWrapper> findByProjectCode(@PathVariable("projectCode") String code) {
         return ResponseEntity.ok(ResponseWrapper.builder()
                 .success(true)
                 .code(HttpStatus.OK.value())
@@ -36,21 +36,30 @@ public class ProjectController {
     }
 
     @PostMapping
-    public ResponseEntity<ResponseWrapper> createProject(@RequestBody ProjectDTO projectDTO){
+    public ResponseEntity<ResponseWrapper> createProject(@RequestBody ProjectDTO projectDTO) {
         projectService.save(projectDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(ResponseWrapper.builder()
                 .success(true)
                 .code(HttpStatus.CREATED.value())
-                .message("Project is successfully created").build());
+                .message("Project is successfully created.").build());
     }
 
     @PutMapping
-    public ResponseEntity<ResponseWrapper> updateProject(@RequestBody ProjectDTO projectDTO){
+    public ResponseEntity<ResponseWrapper> updateProject(@RequestBody ProjectDTO projectDTO) {
         projectService.update(projectDTO);
         return ResponseEntity.ok(ResponseWrapper.builder()
                 .success(true)
                 .code(HttpStatus.OK.value())
-                .message("Project is successfully updated").build());
+                .message("Project is successfully updated.").build());
+    }
+
+    @GetMapping("/manager/project-status")
+    public ResponseEntity<ResponseWrapper> findManagerProjects() {
+        return ResponseEntity.ok(ResponseWrapper.builder()
+                .success(true)
+                .code(HttpStatus.OK.value())
+                .message("Project list is successfully retrieved.")
+                .data(projectService.listAllProjectDetails()).build());
     }
 
 }
