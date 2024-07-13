@@ -5,10 +5,10 @@ import com.cydeo.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.ws.rs.GET;
 
 @RestController
 @RequestMapping("/api/v2/user")
@@ -26,10 +26,17 @@ public class UserController {
         return ResponseEntity.ok(ResponseWrapper.builder()
                 .success(true)
                 .code(HttpStatus.OK.value())
-                .message("User List successfully retrieved")
+                .message("User List successfully retrieved.")
                 .data(userService.listAllUsers()).build());
     }
 
-
+    @GetMapping("/{username}")
+    public ResponseEntity<ResponseWrapper> findByUsername(@PathVariable("username") String username){
+        return ResponseEntity.ok(ResponseWrapper.builder()
+                .success(true)
+                .code(HttpStatus.OK.value())
+                .message("User " + username + " successfully retrieved.")
+                .data(userService.findByUserName(username)).build());
+    }
 
 }
