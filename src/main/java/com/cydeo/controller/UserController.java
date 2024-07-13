@@ -1,13 +1,11 @@
 package com.cydeo.controller;
 
 import com.cydeo.dto.ResponseWrapper;
+import com.cydeo.dto.UserDTO;
 import com.cydeo.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 
 @RestController
@@ -20,13 +18,12 @@ public class UserController {
         this.userService = userService;
     }
 
-
     @GetMapping
     public ResponseEntity<ResponseWrapper> findAllUsers(){
         return ResponseEntity.ok(ResponseWrapper.builder()
                 .success(true)
                 .code(HttpStatus.OK.value())
-                .message("User List successfully retrieved.")
+                .message("User List is successfully retrieved.")
                 .data(userService.listAllUsers()).build());
     }
 
@@ -35,8 +32,34 @@ public class UserController {
         return ResponseEntity.ok(ResponseWrapper.builder()
                 .success(true)
                 .code(HttpStatus.OK.value())
-                .message("User " + username + " successfully retrieved.")
+                .message("User " + username + " is successfully retrieved.")
                 .data(userService.findByUserName(username)).build());
     }
 
+    @PostMapping
+    public ResponseEntity<ResponseWrapper> createUser(@RequestBody UserDTO userDTO){
+        userService.save(userDTO);
+        return ResponseEntity.status(HttpStatus.CREATED).body(ResponseWrapper.builder()
+                .success(true)
+                .code(HttpStatus.CREATED.value())
+                .message("User is successfully created.").build());
+    }
+
+    @PutMapping
+    public ResponseEntity<ResponseWrapper> updateUser(@RequestBody UserDTO userDTO){
+        userService.update(userDTO);
+        return ResponseEntity.ok(ResponseWrapper.builder()
+                .success(true)
+                .code(HttpStatus.OK.value())
+                .message("User is successfully updated.").build());
+    }
+
+    @DeleteMapping("/{username}")
+    public ResponseEntity<ResponseWrapper> deleteUser(@PathVariable("username") String username){
+        userService.delete(username);
+        return ResponseEntity.ok(ResponseWrapper.builder()
+                .success(true)
+                .code(HttpStatus.OK.value())
+                .message("User " + username + " is successfully deleted.").build());
+    }
 }
