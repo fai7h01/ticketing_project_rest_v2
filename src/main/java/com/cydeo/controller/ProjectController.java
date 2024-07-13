@@ -53,6 +53,15 @@ public class ProjectController {
                 .message("Project is successfully updated.").build());
     }
 
+    @DeleteMapping("/{projectCode}")
+    public ResponseEntity<ResponseWrapper> deleteProject(@PathVariable("projectCode") String code){
+        projectService.delete(code);
+        return ResponseEntity.ok(ResponseWrapper.builder()
+                .success(true)
+                .code(HttpStatus.OK.value())
+                .message("Project " + code + " is successfully deleted.").build());
+    }
+
     @GetMapping("/manager/project-status")
     public ResponseEntity<ResponseWrapper> findManagerProjects() {
         return ResponseEntity.ok(ResponseWrapper.builder()
@@ -60,6 +69,15 @@ public class ProjectController {
                 .code(HttpStatus.OK.value())
                 .message("Project list is successfully retrieved.")
                 .data(projectService.listAllProjectDetails()).build());
+    }
+
+    @PutMapping("/manager/complete/{projectCode}")
+    public ResponseEntity<ResponseWrapper> completeManagerProject(@PathVariable("projectCode") String code){
+        projectService.complete(code);
+        return ResponseEntity.ok(ResponseWrapper.builder()
+                .success(true)
+                .code(HttpStatus.OK.value())
+                .message("Project is successfully completed.").build());
     }
 
 }
