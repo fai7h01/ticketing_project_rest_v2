@@ -20,8 +20,8 @@ public class UserController {
         this.userService = userService;
     }
 
-    @RolesAllowed("Admin")
     @GetMapping
+    @RolesAllowed({"Admin","Manager"})
     public ResponseEntity<ResponseWrapper> findAllUsers(){
         return ResponseEntity.ok(ResponseWrapper.builder()
                 .success(true)
@@ -31,6 +31,7 @@ public class UserController {
     }
 
     @GetMapping("/{username}")
+    @RolesAllowed({"Admin","Manager"})
     public ResponseEntity<ResponseWrapper> findByUsername(@PathVariable("username") String username){
         return ResponseEntity.ok(ResponseWrapper.builder()
                 .success(true)
@@ -40,6 +41,7 @@ public class UserController {
     }
 
     @PostMapping
+    @RolesAllowed("Admin")
     public ResponseEntity<ResponseWrapper> createUser(@RequestBody UserDTO userDTO){
         userService.save(userDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(ResponseWrapper.builder()
@@ -49,6 +51,7 @@ public class UserController {
     }
 
     @PutMapping
+    @RolesAllowed("Admin")
     public ResponseEntity<ResponseWrapper> updateUser(@RequestBody UserDTO userDTO){
         userService.update(userDTO);
         return ResponseEntity.ok(ResponseWrapper.builder()
@@ -58,6 +61,7 @@ public class UserController {
     }
 
     @DeleteMapping("/{username}")
+    @RolesAllowed("Admin")
     public ResponseEntity<ResponseWrapper> deleteUser(@PathVariable("username") String username){
         userService.delete(username);
         return ResponseEntity.ok(ResponseWrapper.builder()
