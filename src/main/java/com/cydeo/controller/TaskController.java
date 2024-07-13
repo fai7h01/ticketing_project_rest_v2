@@ -2,6 +2,7 @@ package com.cydeo.controller;
 
 import com.cydeo.dto.ResponseWrapper;
 import com.cydeo.dto.TaskDTO;
+import com.cydeo.enums.Status;
 import com.cydeo.service.TaskService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -61,5 +62,33 @@ public class TaskController {
                 .code(HttpStatus.OK.value())
                 .message("Task is successfully deleted.").build());
     }
+
+    @GetMapping("/employee/pending-tasks")
+    public ResponseEntity<ResponseWrapper> findEmployeePendingTasks(){
+        return ResponseEntity.ok(ResponseWrapper.builder()
+                .success(true)
+                .code(HttpStatus.OK.value())
+                .message("Employee pending task list is successfully retrieved.")
+                .data(taskService.listAllByStatusIsNot(Status.COMPLETE)).build());
+    }
+
+    @GetMapping("/employee/archive")
+    public ResponseEntity<ResponseWrapper> findEmployeeArchiveTasks(){
+        return ResponseEntity.ok(ResponseWrapper.builder()
+                .success(true)
+                .code(HttpStatus.OK.value())
+                .message("Employee archive task list is successfully retrieved.")
+                .data(taskService.listAllByStatusIs(Status.COMPLETE)).build());
+    }
+
+    @PutMapping("/employee/update")
+    public ResponseEntity<ResponseWrapper> employeeUpdate(@RequestBody TaskDTO taskDTO){
+        taskService.update(taskDTO);
+        return ResponseEntity.ok(ResponseWrapper.builder()
+                .success(true)
+                .code(HttpStatus.OK.value())
+                .message("Employee task is successfully updated.").build());
+    }
+
 
 }
