@@ -11,52 +11,51 @@ import javax.servlet.http.HttpServletRequest;
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(UserNotFoundException.class)
-    public ResponseEntity<ExceptionWrapper> userNotFoundException(UserNotFoundException exception, HttpServletRequest request){
+    public ResponseEntity<ExceptionWrapper> userNotFoundException(UserNotFoundException exception, HttpServletRequest request) {
         exception.printStackTrace();
         String message = exception.getMessage();
-        ExceptionWrapper exceptionWrapper = new ExceptionWrapper(HttpStatus.NOT_FOUND.value(), message,request.getRequestURI());
+        ExceptionWrapper exceptionWrapper = new ExceptionWrapper(HttpStatus.NOT_FOUND.value(), message, request.getRequestURI());
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exceptionWrapper);
     }
 
-
     @ExceptionHandler(UserAlreadyExistException.class)
-    public ResponseEntity<ExceptionWrapper> userAlreadyExistException(UserAlreadyExistException exception, HttpServletRequest request){
+    public ResponseEntity<ExceptionWrapper> userAlreadyExistException(UserAlreadyExistException exception, HttpServletRequest request) {
         exception.printStackTrace();
         String message = exception.getMessage();
-        ExceptionWrapper exceptionWrapper = new ExceptionWrapper(HttpStatus.CONFLICT.value(), message,request.getRequestURI());
+        ExceptionWrapper exceptionWrapper = new ExceptionWrapper(HttpStatus.CONFLICT.value(), message, request.getRequestURI());
         return ResponseEntity.status(HttpStatus.CONFLICT).body(exceptionWrapper);
     }
 
 
     @ExceptionHandler(ProjectNotFoundException.class)
-    public ResponseEntity<ExceptionWrapper> projectNotFoundException(ProjectNotFoundException exception, HttpServletRequest request){
+    public ResponseEntity<ExceptionWrapper> projectNotFoundException(ProjectNotFoundException exception, HttpServletRequest request) {
         exception.printStackTrace();
         String message = exception.getMessage();
-        ExceptionWrapper exceptionWrapper = new ExceptionWrapper(HttpStatus.NOT_FOUND.value(), message,request.getRequestURI());
+        ExceptionWrapper exceptionWrapper = new ExceptionWrapper(HttpStatus.NOT_FOUND.value(), message, request.getRequestURI());
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exceptionWrapper);
     }
 
     @ExceptionHandler(ProjectAlreadyExistException.class)
-    public ResponseEntity<ExceptionWrapper> projectAlreadyExistException(ProjectAlreadyExistException exception, HttpServletRequest request){
+    public ResponseEntity<ExceptionWrapper> projectAlreadyExistException(ProjectAlreadyExistException exception, HttpServletRequest request) {
         exception.printStackTrace();
         String message = exception.getMessage();
-        ExceptionWrapper exceptionWrapper = new ExceptionWrapper(HttpStatus.CONFLICT.value(), message,request.getRequestURI());
+        ExceptionWrapper exceptionWrapper = new ExceptionWrapper(HttpStatus.CONFLICT.value(), message, request.getRequestURI());
         return ResponseEntity.status(HttpStatus.CONFLICT).body(exceptionWrapper);
     }
 
     @ExceptionHandler(TaskAlreadyExistException.class)
-    public ResponseEntity<ExceptionWrapper> taskAlreadyExistException(TaskAlreadyExistException exception, HttpServletRequest request){
+    public ResponseEntity<ExceptionWrapper> taskAlreadyExistException(TaskAlreadyExistException exception, HttpServletRequest request) {
         exception.printStackTrace();
         String message = exception.getMessage();
-        ExceptionWrapper exceptionWrapper = new ExceptionWrapper(HttpStatus.CONFLICT.value(), message,request.getRequestURI());
+        ExceptionWrapper exceptionWrapper = new ExceptionWrapper(HttpStatus.CONFLICT.value(), message, request.getRequestURI());
         return ResponseEntity.status(HttpStatus.CONFLICT).body(exceptionWrapper);
     }
 
     @ExceptionHandler(TaskNotFoundException.class)
-    public ResponseEntity<ExceptionWrapper> taskNotFoundException(TaskNotFoundException exception, HttpServletRequest request){
+    public ResponseEntity<ExceptionWrapper> taskNotFoundException(TaskNotFoundException exception, HttpServletRequest request) {
         exception.printStackTrace();
         String message = exception.getMessage();
-        ExceptionWrapper exceptionWrapper = new ExceptionWrapper(HttpStatus.NOT_FOUND.value(), message,request.getRequestURI());
+        ExceptionWrapper exceptionWrapper = new ExceptionWrapper(HttpStatus.NOT_FOUND.value(), message, request.getRequestURI());
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exceptionWrapper);
     }
 }
