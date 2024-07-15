@@ -8,6 +8,7 @@ import com.cydeo.exception.UserAlreadyExistException;
 import com.cydeo.exception.UserNotFoundException;
 import com.cydeo.mapper.MapperUtil;
 import com.cydeo.repository.UserRepository;
+import com.cydeo.service.KeycloakService;
 import com.cydeo.service.ProjectService;
 import com.cydeo.service.TaskService;
 import com.cydeo.service.UserService;
@@ -24,12 +25,14 @@ public class UserServiceImpl implements UserService {
     private final ProjectService projectService;
     private final TaskService taskService;
     private final MapperUtil mapper;
+    private final KeycloakService keycloakService;
 
-    public UserServiceImpl(UserRepository userRepository, @Lazy ProjectService projectService, @Lazy TaskService taskService, MapperUtil mapper) {
+    public UserServiceImpl(UserRepository userRepository, @Lazy ProjectService projectService, @Lazy TaskService taskService, MapperUtil mapper, KeycloakService keycloakService) {
         this.userRepository = userRepository;
         this.projectService = projectService;
         this.taskService = taskService;
         this.mapper = mapper;
+        this.keycloakService = keycloakService;
     }
 
     @Override
@@ -54,6 +57,7 @@ public class UserServiceImpl implements UserService {
             throw new UserAlreadyExistException("User " + user.getUserName() + " already exists in system.");
         }
         userRepository.save(mapper.convert(user, new User()));
+        keycloakService.userCreate(user);
     }
 
     @Override
