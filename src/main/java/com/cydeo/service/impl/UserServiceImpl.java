@@ -54,7 +54,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public void save(UserDTO user) {
         if (userRepository.findByUserNameAndIsDeleted(user.getUserName(),false) != null){
-            throw new UserAlreadyExistException("User " + user.getUserName() + " already exists in a system.");
+            throw new UserAlreadyExistException("User " + user.getUserName() + " already exists.");
         }
         keycloakService.userCreate(user);
         userRepository.save(mapper.convert(user, new User()));

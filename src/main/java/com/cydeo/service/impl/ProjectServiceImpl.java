@@ -5,6 +5,7 @@ import com.cydeo.dto.UserDTO;
 import com.cydeo.entity.Project;
 import com.cydeo.entity.User;
 import com.cydeo.enums.Status;
+import com.cydeo.exception.ProjectAlreadyExistException;
 import com.cydeo.exception.ProjectNotFoundException;
 import com.cydeo.mapper.MapperUtil;
 import com.cydeo.repository.ProjectRepository;
@@ -50,6 +51,9 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Override
     public void save(ProjectDTO dto) {
+        if (projectRepository.findByProjectCode(dto.getProjectCode()) != null){
+            throw new ProjectAlreadyExistException("Project " + dto.getProjectCode() + " already exists.");
+        }
         dto.setProjectStatus(Status.OPEN);
         projectRepository.save(mapper.convert(dto, new Project()));
     }
