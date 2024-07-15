@@ -4,6 +4,7 @@ import com.cydeo.dto.ProjectDTO;
 import com.cydeo.dto.TaskDTO;
 import com.cydeo.dto.UserDTO;
 import com.cydeo.entity.User;
+import com.cydeo.exception.UserNotFoundException;
 import com.cydeo.mapper.MapperUtil;
 import com.cydeo.repository.UserRepository;
 import com.cydeo.service.ProjectService;
@@ -39,7 +40,11 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDTO findByUserName(String username) {
-        return mapper.convert(userRepository.findByUserNameAndIsDeleted(username, false), new UserDTO());
+        User foundUser = userRepository.findByUserNameAndIsDeleted(username, false);
+        if (foundUser == null) {
+            throw new UserNotFoundException("User " + username + " does not exists.");
+        }
+        return mapper.convert(foundUser, new UserDTO());
     }
 
     @Override
