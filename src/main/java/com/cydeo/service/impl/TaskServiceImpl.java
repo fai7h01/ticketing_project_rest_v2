@@ -7,6 +7,8 @@ import com.cydeo.entity.Project;
 import com.cydeo.entity.Task;
 import com.cydeo.entity.User;
 import com.cydeo.enums.Status;
+import com.cydeo.exception.TaskAlreadyExistException;
+import com.cydeo.exception.TaskNotFoundException;
 import com.cydeo.mapper.MapperUtil;
 import com.cydeo.repository.TaskRepository;
 import com.cydeo.service.TaskService;
@@ -41,11 +43,15 @@ public class TaskServiceImpl implements TaskService {
     @Override
     public TaskDTO findById(Long id) {
         Optional<Task> foundTask = taskRepository.findById(id);
-        return foundTask.map(task -> mapper.convert(task, new TaskDTO())).orElse(null);
+        return foundTask.map(task -> mapper.convert(task, new TaskDTO()))
+                .orElseThrow(() -> new TaskNotFoundException("Task " + id + "does not exists."));
     }
 
     @Override
     public void save(TaskDTO dto) {
+        if (taskRepository.findById(dto.getId()).isPresent()){
+            throw new TaskAlreadyExistException("Task " + dto.getId() + " is already exists.");
+        }
         dto.setAssignedDate(LocalDate.now());
         dto.setStatus(Status.OPEN);
         taskRepository.save(mapper.convert(dto, new Task()));
