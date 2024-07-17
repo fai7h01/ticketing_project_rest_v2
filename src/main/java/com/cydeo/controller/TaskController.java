@@ -4,6 +4,8 @@ import com.cydeo.dto.ResponseWrapper;
 import com.cydeo.dto.TaskDTO;
 import com.cydeo.enums.Status;
 import com.cydeo.service.TaskService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,6 +15,7 @@ import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/api/v2/task")
+@Tag(description = "Task Controller", name = "Task API")
 public class TaskController {
 
     private final TaskService taskService;
@@ -23,6 +26,7 @@ public class TaskController {
 
     @GetMapping
     @RolesAllowed("Manager")
+    @Operation(summary = "Get All Tasks")
     public ResponseEntity<ResponseWrapper> findAllTasks(){
         return ResponseEntity.ok(ResponseWrapper.builder()
                 .success(true)
@@ -33,6 +37,7 @@ public class TaskController {
 
     @GetMapping("/{taskId}")
     @RolesAllowed("Manager")
+    @Operation(summary = "Get Task By Id")
     public ResponseEntity<ResponseWrapper> findTaskById(@PathVariable("taskId") Long id){
         return ResponseEntity.ok(ResponseWrapper.builder()
                 .success(true)
@@ -43,6 +48,7 @@ public class TaskController {
 
     @PostMapping
     @RolesAllowed("Manager")
+    @Operation(summary = "Create Task")
     public ResponseEntity<ResponseWrapper> createTask(@RequestBody @Valid TaskDTO taskDTO){
         taskService.save(taskDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(ResponseWrapper.builder()
@@ -53,6 +59,7 @@ public class TaskController {
 
     @PutMapping
     @RolesAllowed("Manager")
+    @Operation(summary = "Update Task")
     public ResponseEntity<ResponseWrapper> updateTask(@RequestBody @Valid TaskDTO taskDTO){
         taskService.update(taskDTO);
         return ResponseEntity.ok(ResponseWrapper.builder()
@@ -63,6 +70,7 @@ public class TaskController {
 
     @DeleteMapping("/{taskId}")
     @RolesAllowed("Manager")
+    @Operation(summary = "Delete Task")
     public ResponseEntity<ResponseWrapper> deleteTask(@PathVariable("taskId") Long id){
         taskService.delete(id);
         return ResponseEntity.ok(ResponseWrapper.builder()
@@ -73,6 +81,7 @@ public class TaskController {
 
     @GetMapping("/employee/pending-tasks")
     @RolesAllowed("Employee")
+    @Operation(summary = "Get Employee Pending Tasks")
     public ResponseEntity<ResponseWrapper> findEmployeePendingTasks(){
         return ResponseEntity.ok(ResponseWrapper.builder()
                 .success(true)
@@ -83,6 +92,7 @@ public class TaskController {
 
     @GetMapping("/employee/archive")
     @RolesAllowed("Employee")
+    @Operation(summary = "Get Employee Archive Tasks")
     public ResponseEntity<ResponseWrapper> findEmployeeArchiveTasks(){
         return ResponseEntity.ok(ResponseWrapper.builder()
                 .success(true)
@@ -93,6 +103,7 @@ public class TaskController {
 
     @PutMapping("/employee/update")
     @RolesAllowed("Employee")
+    @Operation(summary = "Update Task")
     public ResponseEntity<ResponseWrapper> employeeUpdateTask(@RequestBody TaskDTO taskDTO){
         taskService.update(taskDTO);
         return ResponseEntity.ok(ResponseWrapper.builder()
