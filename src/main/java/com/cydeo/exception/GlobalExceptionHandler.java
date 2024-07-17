@@ -72,6 +72,7 @@ public class GlobalExceptionHandler {
         String message = "Invalid input(s)";
 
         ExceptionWrapper exceptionWrapper = new ExceptionWrapper(HttpStatus.BAD_REQUEST.value(), message, request.getRequestURI());
+
         List<ValidationException> validationExceptions = new ArrayList<>();
 
         for (ObjectError error : exception.getBindingResult().getAllErrors()) {
@@ -81,7 +82,6 @@ public class GlobalExceptionHandler {
             String reason = error.getDefaultMessage();
 
             ValidationException validationException = new ValidationException(errorField,rejectedValue,reason);
-
             validationExceptions.add(validationException);
         }
 
