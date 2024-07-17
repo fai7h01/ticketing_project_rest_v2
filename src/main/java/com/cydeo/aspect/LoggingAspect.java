@@ -23,19 +23,19 @@ public class LoggingAspect {
     public void anyControllerOperation(){};
 
     @Before("anyControllerOperation()")
-    public void beforeAnyControllerOperation(JoinPoint joinPoint){
+    public void beforeAnyControllerOperationAdvice(JoinPoint joinPoint){
         log.info("Before -> Method: {}, User: {}",
                 joinPoint.getSignature().toShortString(), getUsername());
     }
 
     @AfterReturning(value = "anyControllerOperation()", returning = "result")
-    public void afterReturningAnyControllerOperation(JoinPoint joinPoint, Object result){
+    public void afterReturningAnyControllerOperationAdvice(JoinPoint joinPoint, Object result){
         log.info("After Returning -> Method: {}, User: {}, Result: {}",
                 joinPoint.getSignature(), getUsername(), result.toString());
     }
 
     @AfterThrowing(value = "anyControllerOperation()", throwing = "exception")
-    public void afterThrowingAnyControllerException(JoinPoint joinPoint, Exception exception){
+    public void afterThrowingAnyControllerExceptionAdvice(JoinPoint joinPoint, Exception exception){
         log.info("After Throwing -> Method: {}, User: {}, Exception: {}",
                 joinPoint.getSignature(), getUsername(), exception.getMessage());
     }

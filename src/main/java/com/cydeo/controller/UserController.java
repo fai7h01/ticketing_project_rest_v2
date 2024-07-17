@@ -1,5 +1,6 @@
 package com.cydeo.controller;
 
+import com.cydeo.annotation.ExecutionTime;
 import com.cydeo.dto.ResponseWrapper;
 import com.cydeo.dto.UserDTO;
 import com.cydeo.service.UserService;
@@ -21,6 +22,7 @@ public class UserController {
         this.userService = userService;
     }
 
+    @ExecutionTime
     @GetMapping
     @RolesAllowed({"Admin","Manager"})
     public ResponseEntity<ResponseWrapper> findAllUsers(){
@@ -31,6 +33,7 @@ public class UserController {
                 .data(userService.listAllUsers()).build());
     }
 
+    @ExecutionTime
     @GetMapping("/{username}")
     @RolesAllowed({"Admin","Manager"})
     public ResponseEntity<ResponseWrapper> findByUsername(@PathVariable("username") String username){

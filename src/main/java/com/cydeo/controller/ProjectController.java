@@ -1,5 +1,6 @@
 package com.cydeo.controller;
 
+import com.cydeo.annotation.ExecutionTime;
 import com.cydeo.dto.ProjectDTO;
 import com.cydeo.dto.ResponseWrapper;
 import com.cydeo.service.ProjectService;
@@ -20,6 +21,7 @@ public class ProjectController {
         this.projectService = projectService;
     }
 
+    @ExecutionTime
     @GetMapping
     @RolesAllowed("Manager")
     public ResponseEntity<ResponseWrapper> findAllProjects() {
@@ -30,6 +32,7 @@ public class ProjectController {
                 .data(projectService.listAllProjects()).build());
     }
 
+    @ExecutionTime
     @GetMapping("/{projectCode}")
     @RolesAllowed("Manager")
     public ResponseEntity<ResponseWrapper> findByProjectCode(@PathVariable("projectCode") String code) {
@@ -70,6 +73,7 @@ public class ProjectController {
                 .message("Project " + code + " is successfully deleted.").build());
     }
 
+    @ExecutionTime
     @GetMapping("/manager/project-status")
     @RolesAllowed("Manager")
     public ResponseEntity<ResponseWrapper> findManagerProjects() {
