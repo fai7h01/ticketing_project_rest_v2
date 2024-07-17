@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.security.RolesAllowed;
+import javax.validation.Valid;
 
 
 @RestController
@@ -42,7 +43,7 @@ public class UserController {
 
     @PostMapping
     @RolesAllowed("Admin")
-    public ResponseEntity<ResponseWrapper> createUser(@RequestBody UserDTO userDTO){
+    public ResponseEntity<ResponseWrapper> createUser(@RequestBody @Valid UserDTO userDTO){
         userService.save(userDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(ResponseWrapper.builder()
                 .success(true)
@@ -52,7 +53,7 @@ public class UserController {
 
     @PutMapping
     @RolesAllowed("Admin")
-    public ResponseEntity<ResponseWrapper> updateUser(@RequestBody UserDTO userDTO){
+    public ResponseEntity<ResponseWrapper> updateUser(@RequestBody @Valid UserDTO userDTO){
         userService.update(userDTO);
         return ResponseEntity.ok(ResponseWrapper.builder()
                 .success(true)

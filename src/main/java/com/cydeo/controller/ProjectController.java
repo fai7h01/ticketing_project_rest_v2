@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.security.RolesAllowed;
+import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/api/v2/project")
@@ -41,7 +42,7 @@ public class ProjectController {
 
     @PostMapping
     @RolesAllowed("Manager")
-    public ResponseEntity<ResponseWrapper> createProject(@RequestBody ProjectDTO projectDTO) {
+    public ResponseEntity<ResponseWrapper> createProject(@RequestBody @Valid ProjectDTO projectDTO) {
         projectService.save(projectDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(ResponseWrapper.builder()
                 .success(true)
@@ -51,7 +52,7 @@ public class ProjectController {
 
     @PutMapping
     @RolesAllowed("Manager")
-    public ResponseEntity<ResponseWrapper> updateProject(@RequestBody ProjectDTO projectDTO) {
+    public ResponseEntity<ResponseWrapper> updateProject(@RequestBody @Valid ProjectDTO projectDTO) {
         projectService.update(projectDTO);
         return ResponseEntity.ok(ResponseWrapper.builder()
                 .success(true)

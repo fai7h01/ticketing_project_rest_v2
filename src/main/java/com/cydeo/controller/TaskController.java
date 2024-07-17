@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.security.RolesAllowed;
+import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/api/v2/task")
@@ -42,7 +43,7 @@ public class TaskController {
 
     @PostMapping
     @RolesAllowed("Manager")
-    public ResponseEntity<ResponseWrapper> createTask(@RequestBody TaskDTO taskDTO){
+    public ResponseEntity<ResponseWrapper> createTask(@RequestBody @Valid TaskDTO taskDTO){
         taskService.save(taskDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(ResponseWrapper.builder()
                 .success(true)
@@ -52,7 +53,7 @@ public class TaskController {
 
     @PutMapping
     @RolesAllowed("Manager")
-    public ResponseEntity<ResponseWrapper> updateTask(@RequestBody TaskDTO taskDTO){
+    public ResponseEntity<ResponseWrapper> updateTask(@RequestBody @Valid TaskDTO taskDTO){
         taskService.update(taskDTO);
         return ResponseEntity.ok(ResponseWrapper.builder()
                 .success(true)
