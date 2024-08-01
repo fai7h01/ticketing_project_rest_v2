@@ -13,6 +13,9 @@ import com.cydeo.mapper.MapperUtil;
 import com.cydeo.repository.TaskRepository;
 import com.cydeo.service.TaskService;
 import com.cydeo.service.UserService;
+import org.keycloak.adapters.springsecurity.account.SimpleKeycloakAccount;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -106,7 +109,12 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     public List<TaskDTO> listAllByStatusIsNot(Status status) {
-        UserDTO loggedInUser = userService.findByUserName("john@employee.com");
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        SimpleKeycloakAccount details = (SimpleKeycloakAccount) authentication.getDetails();
+        String username = details.getKeycloakSecurityContext().getToken().getPreferredUsername();
+
+        UserDTO loggedInUser = userService.findByUserName(username);
         List<Task> tasks = taskRepository.
                 findAllByStatusIsNotAndAssignedEmployee(status, mapper.convert(loggedInUser, new User()));
         return tasks.stream()
@@ -116,7 +124,12 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     public List<TaskDTO> listAllByStatusIs(Status status) {
-        UserDTO loggedInUser = userService.findByUserName("john@employee.com");
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        SimpleKeycloakAccount details = (SimpleKeycloakAccount) authentication.getDetails();
+        String username = details.getKeycloakSecurityContext().getToken().getPreferredUsername();
+
+        UserDTO loggedInUser = userService.findByUserName(username);
         List<Task> tasks = taskRepository.
                 findAllByStatusAndAssignedEmployee(status, mapper.convert(loggedInUser, new User()));
         return tasks.stream()
